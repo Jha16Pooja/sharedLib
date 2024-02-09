@@ -1,18 +1,20 @@
-def newGit(repo)
-{
-  git "${repo}"
-}
-def newMaven()
-{
-  sh 'mvn package'
-}
-def newDeploy(ip,appname)
-{
-  deploy adapters: [tomcat9(credentialsId: '898c13c4-28fd-4283-82d8-c07f78f8a5e8', path: '', url: "${ip}")], contextPath: "${appname}", war: '**/*.war'
-}
+// Import the package
+package sharedLib.vars
 
-def newTest(jobname)
-{
-  echo "${jobname}"
-  sh "java -jar /home/ubuntu/.jenkins/workspace/${jobname}/testing.jar"
+// Implement Serializable interface
+class GitHelp implements Serializable {
+
+    // Define a script property
+    def script
+
+    // Constructor that takes a script parameter
+    GitHelp(script) {
+        this.script = script
+    }
+
+    // Method to perform Git clone or fetch
+    def gitCloneOrFetch(String repoUrl) {
+        script.echo "Cloning/Fetching from ${repoUrl}"
+        script.git(url: repoUrl)
+    }
 }
